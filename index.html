@@ -1,0 +1,1017 @@
+<!doctype html>
+<html lang="it">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Generatore Presentazione Venditore — Metodo Selettivo</title>
+  <style>
+    :root{
+      --bg:#0b0f14;
+      --panel:#0f1620;
+      --card:#121c28;
+      --muted:#9fb0c3;
+      --text:#e9f0f8;
+      --line:rgba(255,255,255,.08);
+      --accent:#7dd3fc;
+      --accent2:#a78bfa;
+      --danger:#fb7185;
+      --ok:#86efac;
+      --warn:#fbbf24;
+      --shadow: 0 12px 30px rgba(0,0,0,.35);
+      --radius:16px;
+      --mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+      --sans: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, "Apple Color Emoji","Segoe UI Emoji";
+    }
+    *{box-sizing:border-box}
+    body{
+      margin:0;
+      background:radial-gradient(1200px 900px at 20% -10%, rgba(167,139,250,.25), transparent 60%),
+                 radial-gradient(900px 700px at 110% 10%, rgba(125,211,252,.18), transparent 55%),
+                 var(--bg);
+      color:var(--text);
+      font-family:var(--sans);
+      line-height:1.4;
+    }
+    header{
+      padding:22px 18px 10px;
+      border-bottom:1px solid var(--line);
+      position:sticky; top:0;
+      backdrop-filter: blur(10px);
+      background:rgba(11,15,20,.72);
+      z-index:20;
+    }
+    .titleRow{
+      display:flex; align-items:flex-start; justify-content:space-between; gap:12px;
+      max-width:1240px; margin:0 auto;
+    }
+    h1{
+      margin:0;
+      font-size:18px;
+      letter-spacing:.2px;
+      font-weight:760;
+    }
+    .sub{
+      margin-top:6px;
+      color:var(--muted);
+      font-size:13px;
+      max-width:860px;
+    }
+    .actionsTop{
+      display:flex; gap:10px; flex-wrap:wrap; justify-content:flex-end;
+    }
+    button, .btn{
+      border:1px solid var(--line);
+      background:rgba(255,255,255,.06);
+      color:var(--text);
+      border-radius:12px;
+      padding:10px 12px;
+      font-weight:650;
+      font-size:13px;
+      cursor:pointer;
+      transition:transform .08s ease, background .12s ease, border-color .12s ease;
+      user-select:none;
+    }
+    button:hover, .btn:hover{ background:rgba(255,255,255,.085); border-color:rgba(255,255,255,.16); }
+    button:active, .btn:active{ transform:translateY(1px); }
+    .primary{
+      border-color:rgba(125,211,252,.35);
+      background:linear-gradient(135deg, rgba(125,211,252,.18), rgba(167,139,250,.12));
+    }
+    .danger{
+      border-color:rgba(251,113,133,.35);
+      background:linear-gradient(135deg, rgba(251,113,133,.18), rgba(167,139,250,.10));
+    }
+    .ghost{
+      background:transparent;
+    }
+    .wrap{
+      max-width:1240px;
+      margin:0 auto;
+      padding:18px;
+      display:grid;
+      grid-template-columns: 420px 1fr;
+      gap:16px;
+    }
+    @media (max-width: 980px){
+      .wrap{ grid-template-columns:1fr; }
+      header{ position:relative; }
+      .actionsTop{ justify-content:flex-start; }
+    }
+    .panel{
+      background:linear-gradient(180deg, rgba(18,28,40,.88), rgba(15,22,32,.88));
+      border:1px solid var(--line);
+      border-radius:var(--radius);
+      box-shadow: var(--shadow);
+      overflow:hidden;
+    }
+    .panel h2{
+      margin:0;
+      padding:14px 14px 10px;
+      border-bottom:1px solid var(--line);
+      font-size:14px;
+      letter-spacing:.2px;
+      display:flex; justify-content:space-between; align-items:center;
+    }
+    .badge{
+      font-size:11px;
+      padding:4px 8px;
+      border:1px solid var(--line);
+      border-radius:999px;
+      color:var(--muted);
+      background:rgba(255,255,255,.03);
+    }
+    .panelBody{
+      padding:14px;
+    }
+    .grid2{
+      display:grid;
+      grid-template-columns:1fr 1fr;
+      gap:10px;
+    }
+    .field{
+      display:flex;
+      flex-direction:column;
+      gap:6px;
+      margin-bottom:10px;
+    }
+    label{
+      font-size:12px;
+      color:var(--muted);
+    }
+    input[type="text"], input[type="number"], textarea, select{
+      width:100%;
+      padding:10px 10px;
+      border-radius:12px;
+      border:1px solid rgba(255,255,255,.10);
+      background:rgba(5,8,12,.35);
+      color:var(--text);
+      outline:none;
+    }
+    textarea{ min-height:92px; resize:vertical; }
+    input:focus, textarea:focus, select:focus{
+      border-color:rgba(125,211,252,.35);
+      box-shadow: 0 0 0 4px rgba(125,211,252,.08);
+    }
+    .chips{
+      display:flex; flex-wrap:wrap; gap:8px;
+    }
+    .chip{
+      padding:8px 10px;
+      border:1px solid rgba(255,255,255,.10);
+      border-radius:999px;
+      background:rgba(255,255,255,.04);
+      cursor:pointer;
+      font-size:12px;
+      color:var(--text);
+      user-select:none;
+      transition:background .12s ease, border-color .12s ease, transform .08s ease;
+    }
+    .chip:hover{ background:rgba(255,255,255,.06); border-color:rgba(255,255,255,.14); }
+    .chip:active{ transform:translateY(1px); }
+    .chip.on{
+      border-color:rgba(125,211,252,.35);
+      background:rgba(125,211,252,.12);
+    }
+    .hint{
+      font-size:12px;
+      color:var(--muted);
+      margin-top:6px;
+    }
+    .divider{
+      height:1px;
+      background:var(--line);
+      margin:14px 0;
+    }
+
+    /* Output */
+    .output{
+      padding:0;
+    }
+    .outputTop{
+      padding:14px 14px 0;
+      display:flex; gap:10px; flex-wrap:wrap; align-items:center; justify-content:space-between;
+    }
+    .statusLine{
+      font-size:12px;
+      color:var(--muted);
+      display:flex; gap:10px; align-items:center; flex-wrap:wrap;
+    }
+    .dot{
+      width:8px; height:8px; border-radius:50%;
+      background:rgba(255,255,255,.22);
+      display:inline-block;
+    }
+    .dot.ok{ background:rgba(134,239,172,.85); }
+    .dot.warn{ background:rgba(251,191,36,.85); }
+    .dot.bad{ background:rgba(251,113,133,.85); }
+
+    .deck{
+      padding:14px;
+      display:flex;
+      flex-direction:column;
+      gap:12px;
+    }
+    .slide{
+      border:1px solid var(--line);
+      border-radius:var(--radius);
+      background:linear-gradient(180deg, rgba(5,8,12,.18), rgba(255,255,255,.03));
+      padding:14px 14px 12px;
+    }
+    .slideHeader{
+      display:flex;
+      justify-content:space-between;
+      align-items:flex-start;
+      gap:10px;
+      margin-bottom:8px;
+    }
+    .slideTitle{
+      font-size:14px;
+      font-weight:820;
+      letter-spacing:.2px;
+      margin:0;
+    }
+    .slideKpi{
+      font-family:var(--mono);
+      font-size:11px;
+      color:var(--muted);
+      border:1px solid var(--line);
+      padding:6px 8px;
+      border-radius:12px;
+      background:rgba(255,255,255,.03);
+      white-space:nowrap;
+    }
+    .lead{
+      margin:8px 0 10px;
+      color:rgba(233,240,248,.92);
+      font-size:13px;
+    }
+    ul{
+      margin:0;
+      padding-left:18px;
+      color:rgba(233,240,248,.93);
+      font-size:13px;
+    }
+    li{ margin:6px 0; }
+    .callout{
+      margin-top:10px;
+      padding:10px 10px;
+      border-radius:14px;
+      border:1px solid rgba(255,255,255,.10);
+      background:rgba(255,255,255,.04);
+      color:rgba(233,240,248,.94);
+      font-size:13px;
+    }
+    .callout strong{ color:var(--accent); }
+    .pillRow{
+      display:flex; gap:8px; flex-wrap:wrap; margin-top:10px;
+    }
+    .pill{
+      font-size:11px;
+      border:1px solid rgba(255,255,255,.10);
+      border-radius:999px;
+      padding:6px 10px;
+      color:var(--muted);
+      background:rgba(255,255,255,.03);
+    }
+    .pill.accent{ border-color:rgba(125,211,252,.30); color:rgba(125,211,252,.95); background:rgba(125,211,252,.08); }
+    .pill.bad{ border-color:rgba(251,113,133,.30); color:rgba(251,113,133,.95); background:rgba(251,113,133,.08); }
+    .pill.ok{ border-color:rgba(134,239,172,.30); color:rgba(134,239,172,.95); background:rgba(134,239,172,.08); }
+
+    .footerNote{
+      margin-top:12px;
+      padding:12px;
+      border-radius:14px;
+      border:1px dashed rgba(255,255,255,.18);
+      background:rgba(0,0,0,.18);
+      color:var(--muted);
+      font-size:12px;
+    }
+
+    /* Print */
+    @media print{
+      header, .panelLeft, .outputTop .actionsTopLocal, .hintPrint { display:none !important; }
+      body{ background:#fff; color:#000; }
+      .wrap{ grid-template-columns:1fr; padding:0; max-width:none; }
+      .panel{ border:none; box-shadow:none; background:#fff; }
+      .slide{ border:1px solid #ddd; background:#fff; page-break-inside:avoid; }
+      .slideKpi, .pill, .badge{ border:1px solid #ddd; background:#fff; color:#444; }
+      .callout{ border:1px solid #ddd; background:#f7f7f7; }
+      .footerNote{ border:1px dashed #bbb; background:#fff; }
+      ul, .lead{ color:#111; }
+      .slideTitle{ color:#000; }
+    }
+  </style>
+</head>
+<body>
+<header>
+  <div class="titleRow">
+    <div>
+      <h1>Generatore Presentazione Venditore — Consulente Immobiliare/Strategico (metodo selettivo)</h1>
+      <div class="sub">
+        Inserisci le risposte del venditore. Il sistema genera una presentazione in 8 sezioni: diretta, strutturata, senza frasi vaghe.
+        <span class="hintPrint">Suggerimento: usa <b>Stampa</b> per ottenere un PDF dal browser.</span>
+      </div>
+    </div>
+    <div class="actionsTop">
+      <button class="primary" id="btnGenerate">Genera</button>
+      <button id="btnCopy">Copia testo</button>
+      <button id="btnPrint">Stampa</button>
+      <button class="danger" id="btnReset">Reset</button>
+    </div>
+  </div>
+</header>
+
+<main class="wrap">
+  <!-- LEFT: INPUT -->
+  <section class="panel panelLeft" aria-label="Questionario">
+    <h2>
+      Questionario di qualificazione
+      <span class="badge">zero fronzoli</span>
+    </h2>
+    <div class="panelBody">
+      <div class="grid2">
+        <div class="field">
+          <label>Nome venditore</label>
+          <input id="sellerName" type="text" placeholder="Es. Marco Rossi" />
+        </div>
+        <div class="field">
+          <label>Tipo</label>
+          <select id="assetType">
+            <option value="immobile">Immobile</option>
+            <option value="attivita">Attività</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="grid2">
+        <div class="field">
+          <label>Città / zona</label>
+          <input id="location" type="text" placeholder="Es. Milano, Porta Romana" />
+        </div>
+        <div class="field">
+          <label>Valore richiesto (€/€k)</label>
+          <input id="askPrice" type="text" placeholder="Es. 380.000" />
+        </div>
+      </div>
+
+      <div class="grid2">
+        <div class="field">
+          <label>Range mercato realistico (se noto)</label>
+          <input id="marketRange" type="text" placeholder="Es. 340–360k" />
+        </div>
+        <div class="field">
+          <label>Tempistica desiderata</label>
+          <input id="timeline" type="text" placeholder="Es. 60–90 giorni" />
+        </div>
+      </div>
+
+      <div class="field">
+        <label>Motivo della vendita / obiettivo reale (1–2 frasi)</label>
+        <textarea id="goal" placeholder="Es. trasferimento, liquidità, cambio progetto..."></textarea>
+      </div>
+
+      <div class="field">
+        <label>Urgenza (0 = nessuna, 10 = massima)</label>
+        <input id="urgency" type="number" min="0" max="10" value="6" />
+        <div class="hint">Serve per calibrare tono e “filtro finale”.</div>
+      </div>
+
+      <div class="divider"></div>
+
+      <div class="field">
+        <label>Situazione attuale (spuntare)</label>
+        <div class="chips" id="chipsSituation"></div>
+        <div class="hint">Seleziona ciò che è vero. Non scegliere “per sicurezza”.</div>
+      </div>
+
+      <div class="field">
+        <label>Criticità che rischiano di far perdere valore</label>
+        <div class="chips" id="chipsRisks"></div>
+      </div>
+
+      <div class="field">
+        <label>Punti forti (concreti) da valorizzare</label>
+        <textarea id="strengths" placeholder="Es. doppia esposizione, ristrutturazione 2022, clientela fidelizzata, posizione..."></textarea>
+      </div>
+
+      <div class="field">
+        <label>Vincoli / “non voglio” (se presenti)</label>
+        <textarea id="constraints" placeholder="Es. non voglio visite in orari X, non voglio ribassi oltre Y, privacy..."></textarea>
+      </div>
+
+      <div class="divider"></div>
+
+      <div class="grid2">
+        <div class="field">
+          <label>Commissione (%)</label>
+          <input id="commissionPct" type="number" min="0" step="0.1" value="3" />
+        </div>
+        <div class="field">
+          <label>Commissione minima (opz.)</label>
+          <input id="commissionMin" type="text" placeholder="Es. €5.000" />
+        </div>
+      </div>
+
+      <div class="field">
+        <label>Cosa include il tuo incarico (3–8 punti)</label>
+        <textarea id="includes" placeholder="Es. analisi comparativa, piano marketing, home staging, selezione acquirenti, gestione trattativa..."></textarea>
+        <div class="hint">Se lo lasci vuoto, userò un set standard “senior”.</div>
+      </div>
+
+      <div class="divider"></div>
+
+      <div class="field">
+        <label>Macrodati empatici (passioni / interessi / stile di vita)</label>
+        <input id="empathy" type="text" placeholder="Es. sport, viaggi, famiglia, hobby, lavoro..." />
+        <div class="hint">Usati SOLO all’inizio per apertura. Poi chiude il metodo.</div>
+      </div>
+
+      <div class="field">
+        <label>Note libere (facoltativo)</label>
+        <textarea id="notes" placeholder="Qualsiasi dettaglio utile: cosa teme, cosa si aspetta, esperienze negative..."></textarea>
+      </div>
+    </div>
+  </section>
+
+  <!-- RIGHT: OUTPUT -->
+  <section class="panel output" aria-label="Presentazione generata">
+    <h2>
+      Presentazione / listino generata
+      <span class="badge" id="badgeMode">pronta per stampa</span>
+    </h2>
+
+    <div class="outputTop">
+      <div class="statusLine" id="statusLine">
+        <span class="dot" id="dotStatus"></span>
+        <span id="statusText">Compila il questionario e premi “Genera”.</span>
+      </div>
+
+      <div class="actionsTop actionsTopLocal">
+        <button class="primary" id="btnGenerate2">Rigenera</button>
+        <button class="ghost" id="btnToggleInternal">Mostra promemoria interno</button>
+      </div>
+    </div>
+
+    <div class="deck" id="deck">
+      <!-- slides inserted -->
+    </div>
+
+    <div class="footerNote" id="internalNote" style="display:none;">
+      <b>NOTA OPERATIVA INTERNA</b><br/>
+      Ricordati sempre di:
+      <ul>
+        <li>raccogliere macrodati su passioni, interessi, stile di vita del venditore</li>
+        <li>usarli solo all’inizio per creare empatia immediata</li>
+        <li>non abusarne: l’empatia serve ad aprire, il metodo chiude</li>
+      </ul>
+    </div>
+  </section>
+</main>
+
+<script>
+  // ------------------------------
+  // Config: chips
+  // ------------------------------
+  const SITUATION = [
+    { id:"provato_da_solo", label:"Ha provato da solo (privato)" },
+    { id:"incarico_scaduto", label:"Incarico scaduto / deluso da agenzia" },
+    { id:"annuncio_fermo", label:"Annuncio fermo / poche visite" },
+    { id:"prezzo_alto", label:"Prezzo fuori mercato (sospetto)" },
+    { id:"urgenza_alta", label:"Urgenza reale (entro 90 gg)" },
+    { id:"privacy", label:"Vuole privacy / selezione dura" },
+    { id:"immobile_particolare", label:"Caso particolare (unicità/difetti)" },
+    { id:"trattative_fallite", label:"Trattative saltate" }
+  ];
+
+  const RISKS = [
+    { id:"svalutazione_tempo", label:"Svalutazione da tempo sul mercato" },
+    { id:"foto_scadenti", label:"Presentazione scarsa (foto/testo)" },
+    { id:"target_errato", label:"Target sbagliato / canali a caso" },
+    { id:"visite_inutili", label:"Visite inutili (curiosi/non solvibili)" },
+    { id:"documenti", label:"Documenti/urbanistica da bonificare" },
+    { id:"negoziazione_debole", label:"Trattativa debole (sconti inutili)" },
+    { id:"offerte_non_comparabili", label:"Offerte non comparabili / caos" },
+    { id:"stress", label:"Stress/tempo perso nella gestione" }
+  ];
+
+  function mountChips(containerId, items){
+    const el = document.getElementById(containerId);
+    el.innerHTML = "";
+    for(const it of items){
+      const c = document.createElement("div");
+      c.className = "chip";
+      c.textContent = it.label;
+      c.dataset.id = it.id;
+      c.addEventListener("click", ()=>{
+        c.classList.toggle("on");
+      });
+      el.appendChild(c);
+    }
+  }
+
+  mountChips("chipsSituation", SITUATION);
+  mountChips("chipsRisks", RISKS);
+
+  function getSelected(containerId){
+    return Array.from(document.getElementById(containerId).querySelectorAll(".chip.on"))
+      .map(x => x.dataset.id);
+  }
+
+  // ------------------------------
+  // Helpers: text
+  // ------------------------------
+  const safe = (v) => (v || "").toString().trim();
+  const cap = (s) => s ? s.charAt(0).toUpperCase() + s.slice(1) : "";
+  const joinNonEmpty = (arr, sep=", ") => arr.filter(Boolean).join(sep);
+
+  function assetWords(assetType){
+    const isImmobile = assetType === "immobile";
+    return {
+      thing: isImmobile ? "immobile" : "attività",
+      thingDet: isImmobile ? "l’immobile" : "l’attività",
+      thingDetCap: isImmobile ? "L’immobile" : "L’attività",
+      buyer: isImmobile ? "acquirenti" : "acquirenti / investitori",
+      market: isImmobile ? "mercato immobiliare" : "mercato e numeri (incassi, marginalità, potenziale)",
+      listing: isImmobile ? "annuncio" : "presentazione (numeri + posizionamento)",
+      price: isImmobile ? "prezzo" : "valutazione / multipli",
+      visits: isImmobile ? "visite" : "appuntamenti qualificati",
+      close: isImmobile ? "rogito" : "cessione / subentro"
+    };
+  }
+
+  function scoreCompleteness(data){
+    // Rough score: how much useful info is present.
+    const keys = ["sellerName","location","askPrice","goal","timeline","strengths"];
+    let score = 0;
+    for(const k of keys){
+      if(safe(data[k]).length >= 3) score += 1;
+    }
+    score += Math.min(2, data.situation.length ? 1 : 0) + Math.min(2, data.risks.length ? 1 : 0);
+    return { score, max: 8 };
+  }
+
+  // ------------------------------
+  // Core: generator (tone: diretto, sicuro, consulente)
+  // ------------------------------
+  function buildPresentation(data){
+    const w = assetWords(data.assetType);
+    const seller = safe(data.sellerName) || "Il venditore";
+    const loc = safe(data.location);
+    const ask = safe(data.askPrice);
+    const range = safe(data.marketRange);
+    const timeline = safe(data.timeline);
+    const goal = safe(data.goal);
+    const strengths = safe(data.strengths);
+    const constraints = safe(data.constraints);
+    const empathy = safe(data.empathy);
+    const notes = safe(data.notes);
+
+    const urgency = Number(data.urgency || 0);
+    const urgencyTone = urgency >= 8 ? "alta" : (urgency >= 5 ? "media" : "bassa");
+
+    const sit = new Set(data.situation);
+    const risks = new Set(data.risks);
+
+    const hasTried = sit.has("provato_da_solo") || sit.has("incarico_scaduto");
+    const stuck = sit.has("annuncio_fermo") || sit.has("trattative_fallite");
+    const suspectOverpriced = sit.has("prezzo_alto");
+    const privacy = sit.has("privacy");
+
+    const marketGap = (ask && range) ? `Richiesta: ${ask} — Range realistico indicato: ${range}.` : (ask ? `Richiesta: ${ask}.` : "");
+    const where = loc ? `in zona ${loc}` : "";
+    const when = timeline ? `entro ${timeline}` : "";
+
+    const empathyLine = empathy
+      ? `Nota rapida (umana, non decorativa): ho registrato i tuoi riferimenti su ${empathy}. Lo uso solo per impostare il dialogo. Poi decide il mercato, con metodo.`
+      : `Niente chiacchiere: qui conta solo metodo, numeri e protezione del valore.`;
+
+    // Commission
+    const pct = Number(data.commissionPct || 0);
+    const minFee = safe(data.commissionMin);
+    const feeLine = pct
+      ? `${pct.toString().replace(".", ",")}%${minFee ? ` (minimo ${minFee})` : ""}`
+      : (minFee ? `${minFee}` : "da definire");
+
+    // Includes
+    const includes = safe(data.includes)
+      ? data.includes.split(/\n+/).map(x=>safe(x)).filter(Boolean)
+      : [
+          "Analisi di posizionamento: comparabili reali + domanda attiva, non “prezzi di fantasia”",
+          "Piano di presentazione: foto, copy, angoli di vendita, storytelling tecnico (non pubblicitario)",
+          "Filtro contatti: solvibilità / intenzione / tempi. Stop curiosi.",
+          "Gestione visite: sceneggiatura, raccolta feedback, correzione rapida della strategia",
+          "Gestione offerte: comparazione strutturata + controllo condizioni",
+          "Trattativa: protezione del prezzo e dei tempi, riduzione concessioni inutili",
+          "Chiusura: documenti, coordinamento tecnico-legale, timeline fino a " + w.close
+        ];
+
+    // “Casi simili” verosimili basati su segnali
+    const case1 = (() => {
+      const title = w.assetType === "immobile" ? "Caso: prezzo “di pancia” e annuncio che si spegne" : "Caso: valutazione sbilanciata e numeri non presentati";
+      const init = [
+        `Situazione iniziale: ${w.thingDet} ${where || "in una zona competitiva"} con obiettivo ${when || "in tempi definiti"}, ma senza trazione reale.`,
+        hasTried ? `Avevano già provato ${sit.has("incarico_scaduto") ? "con un’agenzia" : "da privato"}: tante conversazioni, poca sostanza.` : `Avevano avviato la vendita “standard”, senza un vero posizionamento.`
+      ];
+      const err = [
+        suspectOverpriced || risks.has("svalutazione_tempo")
+          ? `Errore commesso: ancorarsi al prezzo desiderato e restare “in vetrina” troppo a lungo. Risultato: perdita di credibilità, richieste di sconto aggressive.`
+          : `Errore commesso: presentazione e targeting generici. Risultato: contatti non qualificati, tempo perso, nessuna leva sul prezzo.`
+      ];
+      const act = [
+        `Intervento: riposizionamento su comparabili reali + segmentazione dei clienti. Ho cambiato ${w.listing}: messaggio tecnico, prove, condizioni, niente fumo.`,
+        `Ho introdotto filtro (telefono → requisiti → appuntamento) e una gestione feedback a 72 ore per correggere rotta senza perdere settimane.`
+      ];
+      const res = [
+        w.assetType === "immobile"
+          ? `Risultato misurabile: riduzione visite inutili, 2 offerte comparabili, chiusura in tempi coerenti con il mercato e sconto contenuto rispetto alla richiesta iniziale.`
+          : `Risultato misurabile: richieste qualificate, 2 soggetti in negoziazione, condizioni più pulite (caparre/tempi), chiusura con struttura chiara e meno rischio.`
+      ];
+      return { title, init, err, act, res };
+    })();
+
+    const case2 = (() => {
+      const title = privacy ? "Caso: privacy alta e selezione dura" : "Caso: trattative che saltano per mancanza di controllo";
+      const init = [
+        `Situazione iniziale: venditore stressato e tempo limitato. Obiettivo: vendere senza trasformare la vita in una segreteria.`,
+        privacy
+          ? `Vincolo forte: privacy. Nessuna esposizione inutile, nessun giro di visite “turistiche”.`
+          : `Problema: trattative avviate e poi saltate (condizioni, tempi, documenti, indecisione).`
+      ];
+      const err = [
+        privacy
+          ? `Errore commesso: chiudersi troppo (pochi canali) oppure aprirsi troppo (visite a caso). Entrambi bruciano valore: o non vendi, o ti indebolisci.`
+          : `Errore commesso: accettare “offerte” non strutturate e trattare senza controllare presupposti (finanziamento, tempi, documenti).`
+      ];
+      const act = [
+        privacy
+          ? `Intervento: canali selettivi + filtro duro prima di qualsiasi appuntamento. NDA/riservatezza quando serve. Solo clienti con requisiti verificati.`
+          : `Intervento: protocollo offerte: caparra/condizioni/tempi/penali. Niente trattativa finché non ho quadro completo.`
+      ];
+      const res = [
+        privacy
+          ? `Risultato misurabile: meno appuntamenti, ma tutti “veri”. Trattativa più corta perché le obiezioni vengono eliminate prima, non durante.`
+          : `Risultato misurabile: 1 sola trattativa alla volta con priorità chiara, meno concessioni, chiusura senza sorprese.`
+      ];
+      return { title, init, err, act, res };
+    })();
+
+    const case3 = (() => {
+      const title = w.assetType === "immobile" ? "Caso: documenti e dettagli che fanno saltare il valore" : "Caso: potenziale non monetizzato e acquirenti scettici";
+      const init = [
+        w.assetType === "immobile"
+          ? `Situazione iniziale: immobile interessante, ma con punti tecnici da chiarire (conformità, planimetrie, pratiche).`
+          : `Situazione iniziale: attività con potenziale, ma percepita come “rischiosa” perché i numeri non erano leggibili e le leve non erano dimostrate.`
+      ];
+      const err = [
+        w.assetType === "immobile"
+          ? `Errore commesso: affrontare i temi tecnici in ritardo. Ogni dubbio diventa sconto. Ogni settimana persa aumenta la pressione.`
+          : `Errore commesso: raccontare l’attività “a parole”. Senza struttura, l’acquirente applica sconto preventivo per coprirsi.`
+      ];
+      const act = [
+        w.assetType === "immobile"
+          ? `Intervento: bonifica documentale prima della spinta commerciale. Timeline chiara e pacchetto informazioni pronto per chi è solvibile.`
+          : `Intervento: pacchetto numeri: ricavi, costi, marginalità, driver, stagionalità, e “piano 90 giorni” per stabilizzare e crescere.`
+      ];
+      const res = [
+        w.assetType === "immobile"
+          ? `Risultato misurabile: trattativa più pulita, meno richieste di sconto “per paura”, chiusura con rischio ridotto.`
+          : `Risultato misurabile: percezione di rischio più bassa → condizioni migliori → negoziazione su dati, non su sensazioni.`
+      ];
+      return { title, init, err, act, res };
+    })();
+
+    // Slide 1: posizionamento
+    const slide1 = {
+      title: "1) Posizionamento chiaro: chi sono e come lavoro",
+      kpi: "Obiettivo: proteggere valore",
+      lead: `${empathyLine}`,
+      bullets: [
+        `Io lavoro da consulente: prima metto in sicurezza la strategia, poi spingo la vendita. Non il contrario.`,
+        `Non lavoro con tutti: prendo incarichi solo quando posso controllare processo, comunicazione e trattativa.`,
+        `Il mio metodo serve a evitare tre cose: perdita di valore, tempi morti, illusioni di prezzo.`,
+        marketGap ? `Situazione attuale (dati): ${marketGap}` : `Se non c’è un range di mercato chiaro, lo ricavo con comparabili reali e domanda attiva (non annunci).`,
+        goal ? `Obiettivo dichiarato: ${goal}` : `Obiettivo: definito con te in modo verificabile (tempo, prezzo, margine di manovra).`
+      ],
+      callout: `Se vuoi “provare”, non sono la persona giusta. Io imposto un processo e lo faccio rispettare.`
+    };
+
+    // Slide 2: competenza non generica
+    const slide2 = {
+      title: "2) La mia competenza (non generica)",
+      kpi: "Dove gli altri improvvisano",
+      lead: `Qui non si vince con entusiasmo. Si vince intercettando errori prima che costino soldi.`,
+      bullets: [
+        `Intercetto l’errore #1: partire dal ${w.price} desiderato invece che dal posizionamento. Conseguenza: sconti più alti e tempi più lunghi.`,
+        `Intercetto l’errore #2: lasciare che il mercato “valuti” guardando un ${w.listing} mediocre. Conseguenza: il bene viene percepito come uno dei tanti.`,
+        `Intercetto l’errore #3: confondere contatti con ${w.buyer}. Conseguenza: ${w.visits} inutili e stress.`,
+        `Fase critica in cui intervengo: filtro e pre-qualifica prima di qualunque appuntamento. È qui che si protegge il ${w.price}.`,
+        `Fase critica in cui intervengo: gestione offerte con criteri comparabili (prezzo, condizioni, tempi, rischio). Qui si evita di “svendere per stanchezza”.`
+      ],
+      callout: `Competenza = procedure + conseguenze. Io porto le procedure. Il mercato porta il risultato.`
+    };
+
+    // Slide 3: casi simili
+    const slide3 = {
+      title: "3) Esperienze passate — casi simili (il tuo problema non è nuovo)",
+      kpi: "Pattern ripetibili",
+      lead: `${seller}${where ? `, ${where}` : ""}: quello che stai vivendo è un pattern, non un destino. E i pattern si gestiscono con metodo.`,
+      bullets: [
+        `🔹 ${case1.title}`,
+        `• ${case1.init.join(" ")}`,
+        `• ${case1.err.join(" ")}`,
+        `• ${case1.act.join(" ")}`,
+        `• ${case1.res.join(" ")}`,
+        ``,
+        `🔹 ${case2.title}`,
+        `• ${case2.init.join(" ")}`,
+        `• ${case2.err.join(" ")}`,
+        `• ${case2.act.join(" ")}`,
+        `• ${case2.res.join(" ")}`,
+        ``,
+        `🔹 ${case3.title}`,
+        `• ${case3.init.join(" ")}`,
+        `• ${case3.err.join(" ")}`,
+        `• ${case3.act.join(" ")}`,
+        `• ${case3.res.join(" ")}`
+      ],
+      callout: `Il punto non è “sperare”. Il punto è togliere variabili: prezzo, target, prove, filtro, trattativa.`
+    };
+
+    // Slide 4: cosa succede se si lega a me
+    const slide4 = {
+      title: "4) Cosa succede se si lega a me (vantaggio competitivo concreto)",
+      kpi: "Rischio ↓ Stress ↓ Tempo ↓",
+      lead: `Se lavoriamo insieme cambia una cosa: tu smetti di “gestire la vendita”. Io gestisco un processo.`,
+      bullets: [
+        `Prima della vendita: analisi comparativa + posizionamento + piano presentazione (foto, testo, prove, leve).`,
+        `Durante la vendita: canali giusti, controllo messaggio, ${w.visits} solo su clienti qualificati.`,
+        `Nella trattativa: regole chiare, niente concessioni automatiche, negoziazione su dati e condizioni.`,
+        `Nella chiusura: documenti e timeline fino a ${w.close}. Problemi anticipati, non rincorsi.`,
+        strengths ? `Valorizzazione mirata (non poesia): ${strengths}` : `Valorizzazione mirata: punti forti tradotti in “motivi di scelta” per il cliente.`,
+        constraints ? `Vincoli rispettati, senza sabotare la vendita: ${constraints}` : `Vincoli gestiti in modo compatibile con la vendita (privacy sì, sabotaggio no).`
+      ],
+      callout: `Con me non “ti affidi”. Ti metti in una traiettoria controllata.`
+    };
+
+    // Slide 5: cosa succederà in modo prevedibile
+    const slide5 = {
+      title: "5) Cosa succederà in modo prevedibile (scenario realistico)",
+      kpi: "Processo, non speranza",
+      lead: `Scenario: niente miracoli, niente storytelling vuoto. Solo passaggi sequenziali.`,
+      bullets: [
+        `Posizionamento: definizione del ${w.price} difendibile con comparabili reali e domanda attiva.`,
+        `Selezione clienti: filtro su requisiti, tempi e intenzione. Se non può comprare, non entra.`,
+        `Gestione offerte: raccolta strutturata, comparazione e priorità. Niente caos “mi hanno detto che…”.`,
+        `Protezione ${w.price}: trattativa con margine deciso prima, non sotto pressione dopo settimane.`,
+        timeline ? `Timeline: obiettivo operativo ${timeline} (poi comanda la risposta del mercato).` : `Timeline: definita su base urgenza e risposta del mercato.`,
+        `Controllo: report settimanale con dati (contatti qualificati, feedback, aggiustamenti).`
+      ],
+      callout: `Se vuoi vendere bene, devi accettare una cosa: il mercato non si comanda. Si gestisce.`
+    };
+
+    // Slide 6: anticipazione emotiva guidata
+    const slide6 = {
+      title: "6) Anticipazione emotiva guidata (senza motivazionalismi)",
+      kpi: "Chiusura mentale del ciclo",
+      lead: `Immagina la scena finale, in modo concreto. Perché è lì che devi arrivare — senza bruciare valore nel tragitto.`,
+      bullets: [
+        w.assetType === "immobile"
+          ? `Apri la mail/WhatsApp: “Conferma appuntamento ${w.close}”. Non è una speranza: è l’esito di un processo che ha filtrato e protetto il prezzo.`
+          : `Chiudi l’accordo e i numeri sono allineati: niente “scoperte” last minute. L’acquirente paga perché ha capito.`
+        ,
+        `Smetti di rispondere a curiosi. Smetti di giustificare il ${w.price}. Parli solo con chi ha requisiti reali.`,
+        `La pressione scende perché ogni settimana sai dove sei: dati, feedback, decisioni. Non ansia e tentativi.`,
+        `Quando arriva l’offerta giusta, la riconosci subito: prezzo + condizioni + tempi. Nessun teatro.`,
+        urgency >= 8
+          ? `E soprattutto: non arrivi al punto di “svendere per stanchezza” perché il processo ti toglie il caos addosso.`
+          : `E soprattutto: non resti bloccato mesi a consumare valore lentamente.`
+      ],
+      callout: `Le sensazioni migliori arrivano quando hai fatto le cose giuste prima. Non quando speri forte.`
+    };
+
+    // Slide 7: commissione
+    const slide7 = {
+      title: "7) La mia commissione (senza giustificazioni)",
+      kpi: "Competenza = costo",
+      lead: `La mia commissione non è il prezzo di “aprire porte”. È il prezzo della riduzione del rischio e degli errori costosi.`,
+      bullets: [
+        `Commissione: ${feeLine}.`,
+        `Questo costo compra: controllo del processo, filtro clienti, protezione del ${w.price}, gestione della trattativa, chiusura ordinata.`,
+        `Quando la commissione sembra “alta”, di solito è perché si sottovaluta il costo degli errori: tempo, svalutazione, sconti inutili, trattative saltate.`
+      ],
+      callout: `Non si negozia nel testo. Se vuoi risparmiare sulla competenza, stai scegliendo più rischio.`
+    };
+
+    // Slide 8: filtro finale (implicito)
+    const slide8 = {
+      title: "8) Filtro finale (implicito): chi dovrebbe auto-escludersi",
+      kpi: "Non per tutti",
+      lead: `Te lo dico in anticipo, così non perdiamo tempo: questo metodo ha dei requisiti.`,
+      bullets: [
+        `Non è per chi “vuole provare” o tenersi tutte le opzioni aperte. Un processo funziona se viene rispettato.`,
+        `Non è per chi non ha urgenza reale e accetta di restare sul mercato mesi “finché capita”.`,
+        `Non è per chi non accetta il mercato e vuole imporre un ${w.price} scollegato dai dati.`,
+        `È per chi vuole una vendita gestita: meno caos, meno rischio, più controllo.`,
+        `Se ti riconosci: il prossimo passo è semplice. Definiamo posizionamento + margine di trattativa + regole operative. Poi eseguo.`
+      ],
+      callout: `Decisione pratica: o imposti metodo adesso, o paghi l’inefficienza dopo. Il mercato presenta sempre il conto.`
+    };
+
+    // “Listino” / incluso
+    const slideListino = {
+      title: "Appendice: cosa include l’incarico (listino operativo)",
+      kpi: "Deliverable concreti",
+      lead: `Queste sono attività. Non aggettivi.`,
+      bullets: includes.map(x => `• ${x}`),
+      callout: `Se una voce non serve al tuo caso, si taglia. Se serve e manca, si aggiunge. Sempre con logica costo/beneficio.`
+    };
+
+    // Extra: snapshot del caso del venditore
+    const snapshot = {
+      title: "Snapshot: il tuo caso in una riga (per evitare autoinganni)",
+      kpi: "Chiarezza",
+      lead: `Riassunto secco — così capiamo subito dove sta il rischio.`,
+      bullets: [
+        loc ? `📍 Zona: ${loc}.` : `📍 Zona: (da definire).`,
+        ask ? `💶 Richiesta: ${ask}.` : `💶 Richiesta: (da definire).`,
+        range ? `📊 Range mercato indicato: ${range}.` : `📊 Range mercato: lo determino con comparabili reali.`,
+        timeline ? `⏱️ Obiettivo tempo: ${timeline}.` : `⏱️ Obiettivo tempo: (da definire).`,
+        goal ? `🎯 Motivo/obiettivo: ${goal}` : `🎯 Motivo/obiettivo: (da definire).`,
+        data.situation.length ? `🧩 Stato: ${data.situation.map(id => (SITUATION.find(x=>x.id===id)||{label:id}).label).join(" • ")}` : `🧩 Stato: (da qualificare).`,
+        data.risks.length ? `⚠️ Rischi: ${data.risks.map(id => (RISKS.find(x=>x.id===id)||{label:id}).label).join(" • ")}` : `⚠️ Rischi: (da qualificare).`,
+        strengths ? `✅ Punti forti: ${strengths}` : `✅ Punti forti: (da definire).`,
+        constraints ? `🧱 Vincoli: ${constraints}` : `🧱 Vincoli: (da definire).`,
+        notes ? `📝 Note: ${notes}` : null
+      ].filter(Boolean),
+      callout: `Se una di queste righe è “fumosa”, lì nasce lo sconto. Io lavoro per togliere fumo.`
+    };
+
+    // Build deck order: snapshot + 1..8 + listino
+    return [snapshot, slide1, slide2, slide3, slide4, slide5, slide6, slide7, slide8, slideListino];
+  }
+
+  // ------------------------------
+  // Render
+  // ------------------------------
+  function renderDeck(slides){
+    const deck = document.getElementById("deck");
+    deck.innerHTML = "";
+    for(const s of slides){
+      const card = document.createElement("div");
+      card.className = "slide";
+
+      const header = document.createElement("div");
+      header.className = "slideHeader";
+
+      const h3 = document.createElement("h3");
+      h3.className = "slideTitle";
+      h3.textContent = s.title;
+
+      const kpi = document.createElement("div");
+      kpi.className = "slideKpi";
+      kpi.textContent = s.kpi || "";
+
+      header.appendChild(h3);
+      header.appendChild(kpi);
+
+      const lead = document.createElement("div");
+      lead.className = "lead";
+      lead.textContent = s.lead || "";
+
+      const ul = document.createElement("ul");
+      (s.bullets || []).forEach(b=>{
+        const li = document.createElement("li");
+        li.textContent = b;
+        ul.appendChild(li);
+      });
+
+      const call = document.createElement("div");
+      call.className = "callout";
+      call.innerHTML = `<strong>Nota</strong>: ${escapeHtml(s.callout || "")}`;
+
+      card.appendChild(header);
+      card.appendChild(lead);
+      card.appendChild(ul);
+      if(s.callout) card.appendChild(call);
+
+      // pills (optional, computed later)
+      deck.appendChild(card);
+    }
+  }
+
+  function escapeHtml(str){
+    return String(str)
+      .replaceAll("&","&amp;")
+      .replaceAll("<","&lt;")
+      .replaceAll(">","&gt;")
+      .replaceAll('"',"&quot;")
+      .replaceAll("'","&#039;");
+  }
+
+  function collectData(){
+    return {
+      sellerName: safe(document.getElementById("sellerName").value),
+      assetType: document.getElementById("assetType").value,
+      location: safe(document.getElementById("location").value),
+      askPrice: safe(document.getElementById("askPrice").value),
+      marketRange: safe(document.getElementById("marketRange").value),
+      timeline: safe(document.getElementById("timeline").value),
+      goal: safe(document.getElementById("goal").value),
+      urgency: Number(document.getElementById("urgency").value || 0),
+      situation: getSelected("chipsSituation"),
+      risks: getSelected("chipsRisks"),
+      strengths: safe(document.getElementById("strengths").value),
+      constraints: safe(document.getElementById("constraints").value),
+      commissionPct: Number(document.getElementById("commissionPct").value || 0),
+      commissionMin: safe(document.getElementById("commissionMin").value),
+      includes: safe(document.getElementById("includes").value),
+      empathy: safe(document.getElementById("empathy").value),
+      notes: safe(document.getElementById("notes").value)
+    };
+  }
+
+  function setStatus(data){
+    const {score, max} = scoreCompleteness(data);
+    const dot = document.getElementById("dotStatus");
+    const text = document.getElementById("statusText");
+
+    if(score <= 3){
+      dot.className = "dot bad";
+      text.textContent = `Dati scarsi (${score}/${max}). Se vuoi un output che “taglia”, inserisci almeno zona, obiettivo, prezzo o range, punti forti e rischi.`;
+    }else if(score <= 6){
+      dot.className = "dot warn";
+      text.textContent = `Dati sufficienti (${score}/${max}). Output buono, ma puoi renderlo più “chirurgico” aggiungendo range di mercato e vincoli reali.`;
+    }else{
+      dot.className = "dot ok";
+      text.textContent = `Dati solidi (${score}/${max}). Output pronto: diretto, credibile, e difendibile in colloquio.`;
+    }
+  }
+
+  function generate(){
+    const data = collectData();
+    setStatus(data);
+    const slides = buildPresentation(data);
+    renderDeck(slides);
+  }
+
+  // ------------------------------
+  // Copy / Print / Reset / Internal note
+  // ------------------------------
+  function deckToPlainText(){
+    const slides = Array.from(document.querySelectorAll("#deck .slide"));
+    return slides.map(sl=>{
+      const title = sl.querySelector(".slideTitle")?.textContent?.trim() || "";
+      const lead = sl.querySelector(".lead")?.textContent?.trim() || "";
+      const lis = Array.from(sl.querySelectorAll("li")).map(li => "- " + li.textContent.trim());
+      const note = sl.querySelector(".callout")?.textContent?.trim() || "";
+      return [title, lead, ...lis, note ? ("\n" + note) : ""].filter(Boolean).join("\n");
+    }).join("\n\n" + "=".repeat(56) + "\n\n");
+  }
+
+  document.getElementById("btnGenerate").addEventListener("click", generate);
+  document.getElementById("btnGenerate2").addEventListener("click", generate);
+
+  document.getElementById("btnCopy").addEventListener("click", async ()=>{
+    const txt = deckToPlainText();
+    try{
+      await navigator.clipboard.writeText(txt);
+      const b = document.getElementById("badgeMode");
+      b.textContent = "copiato negli appunti";
+      setTimeout(()=> b.textContent = "pronta per stampa", 1400);
+    }catch(e){
+      alert("Clipboard non disponibile. Seleziona e copia manualmente dalla pagina stampata.");
+    }
+  });
+
+  document.getElementById("btnPrint").addEventListener("click", ()=> window.print());
+
+  document.getElementById("btnReset").addEventListener("click", ()=>{
+    // reset inputs
+    ["sellerName","location","askPrice","marketRange","timeline","goal","strengths","constraints","commissionMin","includes","empathy","notes"].forEach(id=>{
+      const el = document.getElementById(id);
+      if(el) el.value = "";
+    });
+    document.getElementById("urgency").value = 6;
+    document.getElementById("commissionPct").value = 3;
+    document.getElementById("assetType").value = "immobile";
+    // reset chips
+    document.querySelectorAll(".chip.on").forEach(c=>c.classList.remove("on"));
+    // reset status + output
+    document.getElementById("dotStatus").className = "dot";
+    document.getElementById("statusText").textContent = "Compila il questionario e premi “Genera”.";
+    document.getElementById("deck").innerHTML = "";
+  });
+
+  document.getElementById("btnToggleInternal").addEventListener("click", ()=>{
+    const box = document.getElementById("internalNote");
+    const btn = document.getElementById("btnToggleInternal");
+    const shown = box.style.display !== "none";
+    box.style.display = shown ? "none" : "block";
+    btn.textContent = shown ? "Mostra promemoria interno" : "Nascondi promemoria interno";
+  });
+
+  // First render with a minimal template, so user sees structure immediately
+  generate();
+</script>
+</body>
+</html>
